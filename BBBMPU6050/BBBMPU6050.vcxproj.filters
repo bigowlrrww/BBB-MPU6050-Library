@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source files">
+      <UniqueIdentifier>{5527e614-7860-49e8-b903-07d5f25edec4}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header files">
+      <UniqueIdentifier>{c584f9c1-bc95-45b2-b60a-c30fa73a5f9b}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource files">
+      <UniqueIdentifier>{d0dff304-0748-4903-b6b5-9cd6820de3fa}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="VisualGDB settings">
+      <UniqueIdentifier>{04d0800f-ea49-4aac-8d6b-126dfc3fae2e}</UniqueIdentifier>
+      <Extensions>*.vgdbsettings</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BBBMPU6050-Debug.vgdbsettings">
+      <Filter>VisualGDB settings</Filter>
+    </None>
+    <None Include="BBBMPU6050-Release.vgdbsettings">
+      <Filter>VisualGDB settings</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="BBBMPU6050.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="DataRef.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="Digital.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="DMP-processing.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="I2cPort.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="Ihandler.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="MPU6050.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeLists.txt">
+      <Filter>Source files</Filter>
+    </Text>
+    <Text Include="LICENSE.txt">
+      <Filter>Source files</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MPU6050.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="AllDevices.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="DataRef.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Digital.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="DMP-processing.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="gcc_Debug.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="gcc_Release.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="helper_3dmath.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="I2cPort.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Ihandler.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

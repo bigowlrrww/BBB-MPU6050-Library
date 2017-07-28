@@ -1,0 +1,2 @@
+PREFROM ON EVERY BOOT
+1) 'echo BB-I2C1A1 > /sys/devices/bone_capemgr.*/slots'
