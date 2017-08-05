@@ -4,5 +4,5 @@
 cmake_minimum_required(VERSION 2.7)
 project(BBBMPU6050)
 set(LIBRARIES_FROM_REFERENCES "")
-add_executable(BBBMPU6050 BBBMPU6050.cpp DataRef.cpp Digital.cpp DMP-processing.cpp I2cPort.cpp Ihandler.cpp MPU6050.cpp TestMpu6050.cpp TestMpu6050DMP6.cpp)
+add_executable(BBBMPU6050 ../../../../Documents/motion_driver-5.1.3/motion_driver-5.1.3/core/driver/eMPL/inv_mpu_dmp_motion_driver.c BBBMPU6050.cpp DataRef.cpp Digital.cpp DMP-processing.cpp I2cPort.cpp Ihandler.cpp MPU6050.cpp DMP-processsing-backup.cpp)
 target_link_libraries(BBBMPU6050 "${LIBRARIES_FROM_REFERENCES}")

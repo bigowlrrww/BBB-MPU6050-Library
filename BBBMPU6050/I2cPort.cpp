@@ -1,20 +1,3 @@
-/*
- Copyright (C) 2014  Cagdas Caglak http://expcodes.blogspot.com.tr/
-
- This program is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
-
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 #include "I2cPort.h"
 #include "DMP-processing.h"
 
@@ -213,7 +196,7 @@ namespace bigowl_i2cport {
  * @param length Array length.
  * @return void.
  */
-    void I2cPort::writeByteBuffer(uint8_t DATA_REGADD, uint8_t *data,
+    void I2cPort::writeByteBuffer(uint8_t DATA_REGADD, uint8_t *data, //TODO posibly the cause of issue
                                   uint8_t length) {
 
         uint8_t buffer[1];

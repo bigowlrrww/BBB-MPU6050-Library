@@ -99,7 +99,7 @@
 	#define DEBUG_FLUSH
 #endif
 
-#define DMP_CODE_SIZE       1929    // dmpMemory[]
+#define DMP_CODE_SIZE       3062    // dmpMemory[]
 #define DMP_CONFIG_SIZE     192     // dmpConfig[]
 #define DMP_UPDATES_SIZE    47      // dmpUpdates[]
 namespace Color {
