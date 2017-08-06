@@ -343,7 +343,7 @@ uint8_t MPU6050DMP::dmpInitialize(MPU6050 *mpu6050) {
 	DEBUG_PRINT(F("Writing DMP code to MPU memory banks ("));
 	DEBUG_PRINT(DMP_CODE_SIZE);
 	DEBUG_PRINTLN(F(" bytes)"));
-	if (mpu6050->writeProgMemoryBlock(dmpMemory, DMP_CODE_SIZE, 0, 0, false)) {
+	if (mpu6050->writeProgMemoryBlock(dmpMemory, DMP_CODE_SIZE, 0, 0, true)) {
 		DEBUG_PRINTLN(F("Success! DMP code written and verified."));
 
 		// write DMP configuration
@@ -373,7 +373,7 @@ uint8_t MPU6050DMP::dmpInitialize(MPU6050 *mpu6050) {
 
 			DEBUG_PRINTLN(F("Setting DMP programm start address"));
 			//write start address MSB into register
-			mpu6050->setDMPConfig1(0x03);
+			mpu6050->setDMPConfig1(0x04);
 			//write start address LSB into register
 			mpu6050->setDMPConfig2(0x00);
 
@@ -390,13 +390,13 @@ uint8_t MPU6050DMP::dmpInitialize(MPU6050 *mpu6050) {
 			//setYGyroOffset(0);
 			//setZGyroOffset(0);
 
-			DEBUG_PRINTLN(F("Writing final memory update 1/11 (DMP software)..."));
+			DEBUG_PRINTLN(F("Writing final memory update 1/7 (function unknown)..."));
 			uint8_t dmpUpdate[16], j;
 			uint16_t pos = 0;
 			for (j = 0; j < 4 || j < dmpUpdate[2] + 3; j++, pos++) dmpUpdate[j] = pgm_read_byte(&dmpUpdates[pos]);
 			mpu6050->writeMemoryBlock(dmpUpdate + 3, dmpUpdate[2], dmpUpdate[0], dmpUpdate[1], false, false);
 
-			DEBUG_PRINTLN(F("Writing final memory update 2/11 (DMP software)..."));
+			DEBUG_PRINTLN(F("Writing final memory update 2/7 (function unknown)..."));
 			for (j = 0; j < 4 || j < dmpUpdate[2] + 3; j++, pos++) dmpUpdate[j] = pgm_read_byte(&dmpUpdates[pos]);
 			mpu6050->writeMemoryBlock(dmpUpdate + 3, dmpUpdate[2], dmpUpdate[0], dmpUpdate[1], false, false);
 
@@ -435,15 +435,15 @@ uint8_t MPU6050DMP::dmpInitialize(MPU6050 *mpu6050) {
 			DEBUG_PRINTLN(F("Resetting DMP..."));
 			mpu6050->resetDMP();
 
-			DEBUG_PRINTLN(F("Writing final memory update 3/11 (DMP software)..."));
+			DEBUG_PRINTLN(F("Writing final memory update 3/7 (function unknown)..."));
 			for (j = 0; j < 4 || j < dmpUpdate[2] + 3; j++, pos++) dmpUpdate[j] = pgm_read_byte(&dmpUpdates[pos]);
 			mpu6050->writeMemoryBlock(dmpUpdate + 3, dmpUpdate[2], dmpUpdate[0], dmpUpdate[1], false, false);
 
-			DEBUG_PRINTLN(F("Writing final memory update 4/11 (DMP software)..."));
+			DEBUG_PRINTLN(F("Writing final memory update 4/7 (function unknown)..."));
 			for (j = 0; j < 4 || j < dmpUpdate[2] + 3; j++, pos++) dmpUpdate[j] = pgm_read_byte(&dmpUpdates[pos]);
 			mpu6050->writeMemoryBlock(dmpUpdate + 3, dmpUpdate[2], dmpUpdate[0], dmpUpdate[1], false, false);
 
-			DEBUG_PRINTLN(F("Writing final memory update 5/11 (DMP software)..."));
+			DEBUG_PRINTLN(F("Writing final memory update 5/7 (function unknown)..."));
 			for (j = 0; j < 4 || j < dmpUpdate[2] + 3; j++, pos++) dmpUpdate[j] = pgm_read_byte(&dmpUpdates[pos]);
 			mpu6050->writeMemoryBlock(dmpUpdate + 3, dmpUpdate[2], dmpUpdate[0], dmpUpdate[1], false, false);
 
@@ -465,7 +465,7 @@ uint8_t MPU6050DMP::dmpInitialize(MPU6050 *mpu6050) {
 			DEBUG_PRINT(F("Current interrupt status="));
 			DEBUG_PRINTLN(mpu6050->getIntStatus());
 
-			DEBUG_PRINTLN(F("Writing final memory update 6/11 (DMP software)..."));
+			DEBUG_PRINTLN(F("Writing final memory update 6/7 (function unknown)..."));
 			for (j = 0; j < 4 || j < dmpUpdate[2] + 3; j++, pos++) dmpUpdate[j] = pgm_read_byte(&dmpUpdates[pos]);
 			mpu6050->writeMemoryBlock(dmpUpdate + 3, dmpUpdate[2], dmpUpdate[0], dmpUpdate[1], false, false);
 
@@ -489,23 +489,7 @@ uint8_t MPU6050DMP::dmpInitialize(MPU6050 *mpu6050) {
 			DEBUG_PRINT(F("Current interrupt status="));
 			DEBUG_PRINTLN(mpu6050->getIntStatus());
 
-			DEBUG_PRINTLN(F("Writing final memory update 7/11 (DMP software)..."));
-			for (j = 0; j < 4 || j < dmpUpdate[2] + 3; j++, pos++) dmpUpdate[j] = pgm_read_byte(&dmpUpdates[pos]);
-			mpu6050->writeMemoryBlock(dmpUpdate + 3, dmpUpdate[2], dmpUpdate[0], dmpUpdate[1], false, false);
-			
-			DEBUG_PRINTLN(F("Writing final memory update 8/11 (DMP software)..."));
-			for (j = 0; j < 4 || j < dmpUpdate[2] + 3; j++, pos++) dmpUpdate[j] = pgm_read_byte(&dmpUpdates[pos]);
-			mpu6050->writeMemoryBlock(dmpUpdate + 3, dmpUpdate[2], dmpUpdate[0], dmpUpdate[1], false, false);
-			
-			DEBUG_PRINTLN(F("Writing final memory update 9/11 (DMP software)..."));
-			for (j = 0; j < 4 || j < dmpUpdate[2] + 3; j++, pos++) dmpUpdate[j] = pgm_read_byte(&dmpUpdates[pos]);
-			mpu6050->writeMemoryBlock(dmpUpdate + 3, dmpUpdate[2], dmpUpdate[0], dmpUpdate[1], false, false);
-			
-			DEBUG_PRINTLN(F("Writing final memory update 10/11 (DMP software)..."));
-			for (j = 0; j < 4 || j < dmpUpdate[2] + 3; j++, pos++) dmpUpdate[j] = pgm_read_byte(&dmpUpdates[pos]);
-			mpu6050->writeMemoryBlock(dmpUpdate + 3, dmpUpdate[2], dmpUpdate[0], dmpUpdate[1], false, false);
-			
-			DEBUG_PRINTLN(F("Writing final memory update 11/11 (DMP software)..."));
+			DEBUG_PRINTLN(F("Writing final memory update 7/7 (function unknown)..."));
 			for (j = 0; j < 4 || j < dmpUpdate[2] + 3; j++, pos++) dmpUpdate[j] = pgm_read_byte(&dmpUpdates[pos]);
 			mpu6050->writeMemoryBlock(dmpUpdate + 3, dmpUpdate[2], dmpUpdate[0], dmpUpdate[1], false, false);
 			

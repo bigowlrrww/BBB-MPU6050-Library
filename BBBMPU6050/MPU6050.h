@@ -20,6 +20,10 @@
 
 #include "I2cPort.h"
 #include <math.h>
+#include <stdio.h>
+#include <string.h>
+#include <iostream>
+#include "Debug.h"
 
 #define SELF_TEST_X				0x0D
 #define SELF_TEST_Y				0x0E

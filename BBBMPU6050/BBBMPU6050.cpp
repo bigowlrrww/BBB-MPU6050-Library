@@ -1,5 +1,6 @@
 #include "AllDevices.h"
 #include "DMP-processing.h"
+#include "Debug.h"
 
 using namespace bigowl_i2cport;
 using namespace bigowl_mpu6050;
@@ -145,7 +146,7 @@ int main() {
 			// .
 			// .
 			// .
-			fifoCount = mpu6050->getFIFO_Count();
+			//fifoCount = mpu6050->getFIFO_Count();
 		}
 
 		// reset interrupt flag and get INT_STATUS byte

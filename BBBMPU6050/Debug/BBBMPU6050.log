@@ -1,3 +1,6 @@
-﻿  VisualGDB: No file changes detected. If you believe it's a mistake, please clean the project and build it again.
+﻿  VisualGDB: Sending 1 updated source file to build machine...
   VisualGDB: Run "make " in directory "/home/debian/visualgdb/c/Users/user/Source/Repos/BBB-MPU6050-Library/BBBMPU6050/Debug" on root@192.168.0.5 (SSH)
+  Scanning dependencies of target BBBMPU6050
+  [ 14%] Building CXX object CMakeFiles/BBBMPU6050.dir/MPU6050.cpp.o
+  Linking CXX executable BBBMPU6050
   [100%] Built target BBBMPU6050

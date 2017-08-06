@@ -83,6 +83,7 @@
   <ItemGroup>
     <ClInclude Include="AllDevices.h" />
     <ClInclude Include="DataRef.h" />
+    <ClInclude Include="Debug.h" />
     <ClInclude Include="Digital.h" />
     <ClInclude Include="DMP-processing.h" />
     <ClInclude Include="gcc_Debug.h" />

@@ -88,5 +88,8 @@
     <ClInclude Include="Ihandler.h">
       <Filter>Header files</Filter>
     </ClInclude>
+    <ClInclude Include="Debug.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -508,62 +508,64 @@ namespace bigowl_mpu6050 {
 	}
 	
 	bool MPU6050::writeMemoryBlock(const uint8_t *data, uint16_t dataSize, uint8_t bank, uint8_t address, bool verify, bool useProgMem) {
+		
 		setMemoryBank(bank, false, false);
 		setMemoryStartAddress(address);
 		uint8_t chunkSize;
 		uint8_t *verifyBuffer;
 		uint8_t *progBuffer;
+		uint8_t *progBufferT[16]; //temparary buffer array to load into progBuffer
 		uint16_t i;
 		uint8_t j;
 		if (verify) verifyBuffer = (uint8_t *)malloc(DMP_MEMORY_CHUNK_SIZE);
-		if (useProgMem) progBuffer = (uint8_t *)malloc(DMP_MEMORY_CHUNK_SIZE);
 		for (i = 0; i < dataSize;) {
 			// determine correct chunk size according to bank position and data size
 			chunkSize = DMP_MEMORY_CHUNK_SIZE;
 
 			// make sure we don't go past the data size
-			if (i + chunkSize > dataSize) chunkSize = dataSize - i;
+			if (i + chunkSize > dataSize) chunkSize = dataSize - i; //if i+16 > all data chunk = all data-i
 
 			// make sure this chunk doesn't go past the bank boundary (256 bytes)
 			if (chunkSize > 256 - address) chunkSize = 256 - address;
 			
-			if (useProgMem) {
-				// write the chunk of data as specified
-				//for (j = 0; j < chunkSize; j++) progBuffer[j] = pgm_read_byte(data + i + j);
-			} else {
-				// write the chunk of data as specified
-				progBuffer = (uint8_t *)data + i;
+			// write the chunk of data as specified
+			for (j = 0; j < chunkSize; j++) 
+			{
+				progBufferT[j] = (uint8_t *)data + i + j;
 			}
+			progBuffer = (uint8_t *) *progBufferT; 
 
 			i2c->writeByteBuffer(RA_MEM_R_W, progBuffer, chunkSize);
 
 			// verify data if needed
 			if (verify && verifyBuffer) {
+				DEBUG_PRINTLN("Verifying MEMORY BANK");
 				setMemoryBank(bank, false, false);
 				setMemoryStartAddress(address);
 				i2c->readByteBuffer(RA_MEM_R_W, verifyBuffer, chunkSize);
-				//if (memcmp(progBuffer, verifyBuffer, chunkSize) != 0) {
-					/*Serial.print("Block write verification error, bank ");
-					Serial.print(bank, DEC);
-					Serial.print(", address ");
-					Serial.print(address, DEC);
-					Serial.print("!\nExpected:");
+				if (memcmp(progBuffer, verifyBuffer, chunkSize) != 0) {
+					std::cout << "Block write verification error, bank 0x";
+					std::cout << std::hex <<static_cast<int>(bank); // needs to read as dec
+					std::cout << ", address 0x";
+					std::cout << std::hex <<static_cast<int>(address); // needs to read as dec
+					std::cout << "!\nExpected:";
 					for (j = 0; j < chunkSize; j++) {
-						Serial.print(" 0x");
-						if (progBuffer[j] < 16) Serial.print("0");
-						Serial.print(progBuffer[j], HEX);
+						std::cout << " 0x";
+						if (progBuffer[j] < 16) std::cout << "0";
+						std::cout << std::hex << static_cast<int>(progBuffer[j]);
 					}
-					Serial.print("\nReceived:");
+					std::cout << "\nReceived:";
 					for (uint8_t j = 0; j < chunkSize; j++) {
-						Serial.print(" 0x");
-						if (verifyBuffer[i + j] < 16) Serial.print("0");
-						Serial.print(verifyBuffer[i + j], HEX);
+						std::cout << " 0x";
+						if (verifyBuffer[i + j] < 16) std::cout << "0";
+						std::cout << std::hex << static_cast<int>(verifyBuffer[i + j]);
 					}
-					Serial.print("\n");*/
-					//free(verifyBuffer);
-					//if (useProgMem) free(progBuffer);
-					//return false; // uh oh.
-				//}
+					std::cout << "" << std:: endl;
+					free(verifyBuffer);
+					if (useProgMem) free(progBuffer);
+					return false; // uh oh.
+				}
+				DEBUG_PRINTLN("Writing MEMORY BANK");
 			}
 
 			// increase byte index by [chunkSize]
