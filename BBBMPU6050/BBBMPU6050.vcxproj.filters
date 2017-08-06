@@ -70,9 +70,6 @@
     <ClInclude Include="Digital.h">
       <Filter>Header files</Filter>
     </ClInclude>
-    <ClInclude Include="DMP-processing.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
     <ClInclude Include="gcc_Debug.h">
       <Filter>Header files</Filter>
     </ClInclude>
@@ -89,6 +86,9 @@
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="Debug.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="DMP-processing.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>

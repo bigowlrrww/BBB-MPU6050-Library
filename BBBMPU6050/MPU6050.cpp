@@ -700,7 +700,9 @@ namespace bigowl_mpu6050 {
 	}
 	
 	void MPU6050::resetFIFO() {
+		setFIFOEnabled(false);
 		i2c->writeBit(USER_CTRL, true, USERCTRL_FIFO_RESET_BIT);
+		setFIFOEnabled(true);//
 	}
 	
 	uint16_t MPU6050::getFIFOCount() {
@@ -783,5 +785,6 @@ namespace bigowl_mpu6050 {
 			}
 		}
 	}
+	//major test zone.
 	
 }  // namespace bigowl_mpu6050

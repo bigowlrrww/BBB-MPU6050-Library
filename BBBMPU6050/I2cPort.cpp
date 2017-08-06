@@ -354,8 +354,9 @@ namespace bigowl_i2cport {
 		
 		if (read(this->file_descriptor, data, length) != length) {
 			msg_error("Can not read data. Address %d.", device_address);
-			DEBUG_ERRORLN("I2cPort.cpp LN# 339");
+			DEBUG_ERRORLN("I2cPort.cpp LN# 339 could also be 0 data in fifo");
 			DEBUG_PRINTH(DATA_REGADD);
+			DEBUG_PRINTLN("");
 		}
 		DEBUG_PRINT("Register: ");
 		DEBUG_PRINTH(DATA_REGADD);

@@ -69,7 +69,7 @@
 // after moving string constants to flash memory storage using the F()
 // compiler macro (Arduino IDE 1.0+ required).
 
-#define DMP_CODE_SIZE       3062    // dmpMemory[]
+#define DMP_CODE_SIZE       1929   // dmpMemory[] //small 1929 // large program is 3062
 #define DMP_CONFIG_SIZE     192     // dmpConfig[]
 #define DMP_UPDATES_SIZE    47      // dmpUpdates[]
 namespace Color {

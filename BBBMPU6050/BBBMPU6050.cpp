@@ -92,48 +92,49 @@ int main() {
     //   std::cout << "----------------------" << std::endl;
     //   usleep(200000);
     //}*/
-	while (ctrl) {
-		// load and configure the DMP
-		std::cout << "Initializing DMP..." << std::endl;
-		devStatus = mpu6050dmp->dmpInitialize(mpu6050);
+	// load and configure the DMP
+	std::cout << "Initializing DMP..." << std::endl;
+	devStatus = mpu6050dmp->dmpInitialize(mpu6050);
 
-		// supply your own gyro offsets here, scaled for min sensitivity
-		mpu6050->setXGyroOffsetTC(220);
-		mpu6050->setYGyroOffsetTC(76);
-		mpu6050->setZGyroOffsetTC(-85);
-		// not needed? mpu6050->setZAccelOffsetTC(1788); // 1688 factory default for my test chip
+	// supply your own gyro offsets here, scaled for min sensitivity
+	
+	mpu6050->setXGyroOffsetTC(200); 
+	mpu6050->setYGyroOffsetTC(76);  
+	mpu6050->setZGyroOffsetTC(-85); 
+	
+	// not needed? mpu6050->setZAccelOffsetTC(1788); // 1688 factory default for my test chip
 
-		// make sure it worked (returns 0 if so)
-		if (devStatus == 0) {
-			// turn on the DMP, now that it's ready
-			std::cout << "Enabling DMP..." << std::endl;
-			mpu6050->setDMPEnabled(true);
+	// make sure it worked (returns 0 if so)
+	if (devStatus == 0) {
+		// turn on the DMP, now that it's ready
+		std::cout << "Enabling DMP..." << std::endl;
+		mpu6050->setDMPEnabled(true);
 
-			// TODO enable Beaglebone interrupt detection
-			/*std::cout << "Enabling interrupt detection (Arduino external interrupt 0)..." << std::endl;
-			attachInterrupt(digitalPinToInterrupt(INTERRUPT_PIN), dmpDataReady, RISING);*/
-			//mpuIntStatus = mpu6050.getIntStatus();
+		// TODO enable Beaglebone interrupt detection
+		/*std::cout << "Enabling interrupt detection (Arduino external interrupt 0)..." << std::endl;
+		attachInterrupt(digitalPinToInterrupt(INTERRUPT_PIN), dmpDataReady, RISING);*/
+		//mpuIntStatus = mpu6050.getIntStatus();
 
-			// set our DMP Ready flag so the main loop() function knows it's okay to use it
-			std::cout << "DMP ready! Waiting for first interrupt..." << std::endl;
-			dmpReady = true;
+		// set our DMP Ready flag so the main loop() function knows it's okay to use it
+		std::cout << "DMP ready! Waiting for first interrupt..." << std::endl;
+		dmpReady = true;
 
-			// get expected DMP packet size for later comparison
-			packetSize = mpu6050dmp->dmpGetFIFOPacketSize();
-		}
-		else {
-			// ERROR!
-			// 1 = initial memory load failed
-			// 2 = DMP configuration updates failed
-			// (if it's going to break, usually the code will be 1)
-			std::cout << "DMP Initialization failed (code ";
-			std::cout << devStatus;
-			std::cout << ")" << std::endl;
-		}
+		// get expected DMP packet size for later comparison
+		packetSize = mpu6050dmp->dmpGetFIFOPacketSize();
+	}
+	else {
+		// ERROR!
+		// 1 = initial memory load failed
+		// 2 = DMP configuration updates failed
+		// (if it's going to break, usually the code will be 1)
+		std::cout << "DMP Initialization failed (code ";
+		std::cout << devStatus;
+		std::cout << ")" << std::endl;
+	}
 		
-		// if programming failed, don't try to do anything
-		if (!dmpReady) return 1;
-
+	// if programming failed, don't try to do anything
+	if (!dmpReady) return 1;
+	while (ctrl) {
 		// wait for MPU interrupt or extra packet(s) available
 		while (fifoCount < packetSize) {
 			// other program behavior stuff here
@@ -146,9 +147,9 @@ int main() {
 			// .
 			// .
 			// .
-			//fifoCount = mpu6050->getFIFO_Count();
+			fifoCount = mpu6050->getFIFO_Count();
 		}
-
+		
 		// reset interrupt flag and get INT_STATUS byte
 		mpuIntStatus = mpu6050->getIntStatus();
 
@@ -159,6 +160,9 @@ int main() {
 		if ((mpuIntStatus & 0x10) || fifoCount == 1024) {
 			// reset so we can continue cleanly
 			mpu6050->resetFIFO();
+			DEBUG_PRINT("FIFOCURRENT: 0x");
+			DEBUG_PRINTLN(fifoCount);
+			
 			std::cout << "FIFO overflow!" << std::endl;
 
 		// otherwise, check for DMP data ready interrupt (this should happen frequently)
@@ -260,6 +264,6 @@ int main() {
 		}
 	}
 	i2c->closeConnection();
-	delete i2c, mpu6050;
+	delete i2c, mpu6050, mpu6050dmp;
 	return 0;
 }
