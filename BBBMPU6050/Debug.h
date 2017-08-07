@@ -7,7 +7,7 @@
 #include <bitset>
 
 //define DEBUG TO DISPLAY DEBUG INFORMATION... WARNING THIS ADDS A LOT OF TEXT TO THE CONSOLE SO IF YOU DO NOT NEED IT DO NOT TURN IT ON.
-#define DEBUG
+//#define DEBUG
 #ifdef DEBUG
 const std::string red("\033[0;31m");
 const std::string green("\033[1;32m");
@@ -32,10 +32,13 @@ const std::string reset("\033[0m");
 #define DEBUG_ERROR(x)
 #define DEBUG_PRINTH(y)
 #define DEBUG_PRINTB(x)
+#define DEBUG_PRINTW(x)
+#define DEBUG_PRINTR(x)
 #define DEBUG_PRINTF(x, y)
 #define DEBUG_PRINTLN(x)
 #define DEBUG_PRINTLNH(x)
 #define DEBUG_PRINTLNF(x, y)
 #define DEBUG_ERRORLN
 #define DEBUG_FLUSH
+
 #endif

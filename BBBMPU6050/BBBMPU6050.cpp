@@ -1,6 +1,7 @@
 #include "AllDevices.h"
 #include "DMP-processing.h"
 #include "Debug.h"
+#include "Digital.h"
 
 using namespace bigowl_i2cport;
 using namespace bigowl_mpu6050;
@@ -92,16 +93,23 @@ int main() {
     //   std::cout << "----------------------" << std::endl;
     //   usleep(200000);
     //}*/
+	
+	
+	//INITIALIZE THE "INTERUPT" PIN
+	int interuptPin = 30;  //Header 9 Pin 11
+	gpio_export(interuptPin); 
+	gpio_set_dir(interuptPin, INPUT_PIN);
+	gpio_set_edge(interuptPin, FALLING); 
+	
+	
 	// load and configure the DMP
 	std::cout << "Initializing DMP..." << std::endl;
 	devStatus = mpu6050dmp->dmpInitialize(mpu6050);
 
-	// supply your own gyro offsets here, scaled for min sensitivity
-	
+	// supply your own gyro offsets here, scaled for min sensitivite
 	mpu6050->setXGyroOffsetTC(200); 
 	mpu6050->setYGyroOffsetTC(76);  
 	mpu6050->setZGyroOffsetTC(-85); 
-	
 	// not needed? mpu6050->setZAccelOffsetTC(1788); // 1688 factory default for my test chip
 
 	// make sure it worked (returns 0 if so)
@@ -134,8 +142,12 @@ int main() {
 		
 	// if programming failed, don't try to do anything
 	if (!dmpReady) return 1;
+	//PIN 30 IS THE INTERUPT PIN, TODO MAKE USE OF THE INTERUPT TO DRIVE WHEN TO LOAD THE FIFO PACKETS
+	//waitForEdge holds execution hostage untill interupt.
+	
 	while (ctrl) {
 		// wait for MPU interrupt or extra packet(s) available
+		waitForEdge(interuptPin, FALLING); //stop untill dmp updated
 		while (fifoCount < packetSize) {
 			// other program behavior stuff here
 			// .
@@ -261,6 +273,7 @@ int main() {
 			std::cout << (string)teapotPacket << std::endl;
 			teapotPacket[11]++; // packetCount, loops at 0xFF on purpose
 #endif
+			usleep(2000);
 		}
 	}
 	i2c->closeConnection();

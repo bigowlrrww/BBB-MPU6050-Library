@@ -184,7 +184,7 @@ const unsigned char dmpConfig[DMP_CONFIG_SIZE] PROGMEM = {
     0x07,   0x46,   0x01,   0x9A,                     // CFG_GYRO_SOURCE inv_send_gyro
     0x07,   0x47,   0x04,   0xF1, 0x28, 0x30, 0x38,   // CFG_9 inv_send_gyro -> inv_construct3_fifo
     0x07,   0x6C,   0x04,   0xF1, 0x28, 0x30, 0x38,   // CFG_12 inv_send_accel -> inv_construct3_fifo
-    0x02,   0x16,   0x02,   0x00, 0x09                // D_0_22 inv_set_fifo_rate
+    0x02,   0x16,   0x02,   0x00, 0x02                // D_0_22 inv_set_fifo_rate
 
     // This very last 0x01 WAS a 0x09, which drops the FIFO rate down to 20 Hz. 0x07 is 25 Hz,
     // 0x01 is 100Hz. Going faster than 100Hz (0x00=200Hz) tends to result in very noisy data.
@@ -322,13 +322,17 @@ uint8_t MPU6050DMP::dmpInitialize(MPU6050 *mpu6050) {
 			//setZGyroOffset(0);
 
 			DEBUG_PRINTLN(F("Writing final memory update 1/7 (function unknown)..."));
-			uint8_t dmpUpdate[16], j;
+			uint8_t dmpUpdate[32], j;
 			uint16_t pos = 0;
-			for (j = 0; j < 4 || j < dmpUpdate[2] + 3; j++, pos++) dmpUpdate[j] = pgm_read_byte(&dmpUpdates[pos]);
+			for (j = 0; j < 4 || j < dmpUpdate[2] + 3; j++, pos++) {
+				dmpUpdate[j] = dmpUpdates[pos];
+			}
 			mpu6050->writeMemoryBlock(dmpUpdate + 3, dmpUpdate[2], dmpUpdate[0], dmpUpdate[1], false, false);
 
 			DEBUG_PRINTLN(F("Writing final memory update 2/7 (function unknown)..."));
-			for (j = 0; j < 4 || j < dmpUpdate[2] + 3; j++, pos++) dmpUpdate[j] = pgm_read_byte(&dmpUpdates[pos]);
+			for (j = 0; j < 4 || j < dmpUpdate[2] + 3; j++, pos++) {
+				dmpUpdate[j] = dmpUpdates[pos];
+			}
 			mpu6050->writeMemoryBlock(dmpUpdate + 3, dmpUpdate[2], dmpUpdate[0], dmpUpdate[1], false, false);
 
 			DEBUG_PRINTLN(F("Resetting FIFO..."));
@@ -367,15 +371,21 @@ uint8_t MPU6050DMP::dmpInitialize(MPU6050 *mpu6050) {
 			mpu6050->resetDMP();
 
 			DEBUG_PRINTLN(F("Writing final memory update 3/7 (function unknown)..."));
-			for (j = 0; j < 4 || j < dmpUpdate[2] + 3; j++, pos++) dmpUpdate[j] = pgm_read_byte(&dmpUpdates[pos]);
+			for (j = 0; j < 4 || j < dmpUpdate[2] + 3; j++, pos++) {
+				dmpUpdate[j] = dmpUpdates[pos];
+			}
 			mpu6050->writeMemoryBlock(dmpUpdate + 3, dmpUpdate[2], dmpUpdate[0], dmpUpdate[1], false, false);
 
 			DEBUG_PRINTLN(F("Writing final memory update 4/7 (function unknown)..."));
-			for (j = 0; j < 4 || j < dmpUpdate[2] + 3; j++, pos++) dmpUpdate[j] = pgm_read_byte(&dmpUpdates[pos]);
+			for (j = 0; j < 4 || j < dmpUpdate[2] + 3; j++, pos++) {
+				dmpUpdate[j] = dmpUpdates[pos];
+			}
 			mpu6050->writeMemoryBlock(dmpUpdate + 3, dmpUpdate[2], dmpUpdate[0], dmpUpdate[1], false, false);
 
 			DEBUG_PRINTLN(F("Writing final memory update 5/7 (function unknown)..."));
-			for (j = 0; j < 4 || j < dmpUpdate[2] + 3; j++, pos++) dmpUpdate[j] = pgm_read_byte(&dmpUpdates[pos]);
+			for (j = 0; j < 4 || j < dmpUpdate[2] + 3; j++, pos++) {
+				dmpUpdate[j] = dmpUpdates[pos];
+			}
 			mpu6050->writeMemoryBlock(dmpUpdate + 3, dmpUpdate[2], dmpUpdate[0], dmpUpdate[1], false, false);
 
 			DEBUG_PRINTLN(F("Waiting for FIFO count > 2..."));
@@ -389,7 +399,7 @@ uint8_t MPU6050DMP::dmpInitialize(MPU6050 *mpu6050) {
 			DEBUG_PRINT(F("Current FIFO count="));
 			DEBUG_PRINTLN(fifoCount);
 			DEBUG_PRINTLN(F("Reading FIFO data..."));
-			mpu6050->getFIFO_Count();
+			mpu6050->getFIFOBytes(fifoBuffer, fifoCount);
 
 			DEBUG_PRINTLN(F("Reading interrupt status..."));
 
@@ -397,7 +407,10 @@ uint8_t MPU6050DMP::dmpInitialize(MPU6050 *mpu6050) {
 			DEBUG_PRINTLN(mpu6050->getIntStatus());
 
 			DEBUG_PRINTLN(F("Reading final memory update 6/7 (function unknown)..."));
-			for (j = 0; j < 4 || j < dmpUpdate[2] + 3; j++, pos++) dmpUpdate[j] = pgm_read_byte(&dmpUpdates[pos]);
+			for (j = 0; j < 4 || j < dmpUpdate[2] + 3; j++, pos++)
+			{
+				dmpUpdate[j] = dmpUpdates[pos];
+			}
 			mpu6050->readMemoryBlock(dmpUpdate + 3, dmpUpdate[2], dmpUpdate[0], dmpUpdate[1]);
 
 			DEBUG_PRINTLN(F("Waiting for FIFO count > 2..."));
@@ -419,9 +432,12 @@ uint8_t MPU6050DMP::dmpInitialize(MPU6050 *mpu6050) {
 
 			DEBUG_PRINT(F("Current interrupt status="));
 			DEBUG_PRINTLN(mpu6050->getIntStatus());
-
+			
 			DEBUG_PRINTLN(F("Writing final memory update 7/7 (function unknown)..."));
-			for (j = 0; j < 4 || j < dmpUpdate[2] + 3; j++, pos++) dmpUpdate[j] = pgm_read_byte(&dmpUpdates[pos]);
+			for (j = 0; j < 4 || j < dmpUpdate[2] + 3; j++, pos++) 
+			{
+				dmpUpdate[j] = dmpUpdates[pos];
+			}
 			mpu6050->writeMemoryBlock(dmpUpdate + 3, dmpUpdate[2], dmpUpdate[0], dmpUpdate[1], false, false);
 
 			DEBUG_PRINTLN(F("DMP is good to go! Finally."));
@@ -438,6 +454,7 @@ uint8_t MPU6050DMP::dmpInitialize(MPU6050 *mpu6050) {
 			DEBUG_PRINTLN(F("Resetting FIFO and clearing INT status one last time..."));
 			mpu6050->resetFIFO();
 			mpu6050->getIntStatus();
+			
 		} else {
 			DEBUG_PRINTLN(F("ERROR! DMP configuration verification failed."));
 			return 2; // configuration block loading failed

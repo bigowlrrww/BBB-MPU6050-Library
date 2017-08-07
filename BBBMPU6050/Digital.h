@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <poll.h>
+#include <sys/epoll.h>
  /****************************************************************
  * Constants
  ****************************************************************/
@@ -28,6 +29,13 @@ enum PIN_VALUE
 	HIGH=1
 };
 
+enum EDGE_VALUE {
+	NONE    = 0,
+	RISING  = 1,
+	FALLING = 2,
+	BOTH    = 3
+};
+
 /****************************************************************
  * gpio_export
  ****************************************************************/
@@ -37,7 +45,7 @@ int gpio_set_dir(unsigned int gpio, PIN_DIRECTION out_flag);
 int gpio_set_value(unsigned int gpio, PIN_VALUE value);
 int gpio_get_value(unsigned int gpio, unsigned int *value);
 int gpio_get_value(unsigned int gpio);
-int gpio_set_edge(unsigned int gpio, char *edge);
+int gpio_set_edge(unsigned int gpio, EDGE_VALUE edge);
 int gpio_fd_open(unsigned int gpio);
 int gpio_fd_close(int fd);
 int gpio_omap_mux_setup(const char *omap_pin0_name, const char *mode);
@@ -45,3 +53,4 @@ void digitalWrite(char *LED_ID,char v[]);
 void adc_export();
 int adc_get_value(unsigned int AIN);
 char getkey();
+int waitForEdge(unsigned int gpio, EDGE_VALUE value);

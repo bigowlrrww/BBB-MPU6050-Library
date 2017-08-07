@@ -148,7 +148,7 @@ int gpio_get_value(unsigned int gpio)
  * gpio_set_edge
  ****************************************************************/
 
-int gpio_set_edge(unsigned int gpio, char *edge)
+int gpio_set_edge(unsigned int gpio, EDGE_VALUE edge)
 {
 	int fd;
 	char buf[MAX_BUF];
@@ -160,8 +160,17 @@ int gpio_set_edge(unsigned int gpio, char *edge)
 		perror("gpio/set-edge");
 		return fd;
 	}
-
-	write(fd, edge, strlen(edge) + 1);
+	switch (edge)
+	{
+		case NONE:
+			write(fd, "none", 5);
+		case RISING:
+			write(fd, "rising", 7);
+		case FALLING:
+			write(fd, "falling", 8);
+		case BOTH:
+			write(fd, "both", 5);
+	}
 	close(fd);
 	return 0;
 }
@@ -328,4 +337,46 @@ char getkey()
 		}
 	}
 	return 'E';
+}
+
+int waitForEdge(unsigned int gpio, EDGE_VALUE value) {
+	char path[50], buf;
+	int efd, fd;
+	struct epoll_event events, ev;
+
+	snprintf(path, sizeof(path), SYSFS_GPIO_DIR "/gpio%u/value", gpio);
+
+	  //The following lines were commented out for more efficient polling
+	  //this->exportPin(gpio);
+	  //this->setDirection(gpio, INPUT);
+	  //this->setEdge(gpio, value);
+
+	    // Get value file descriptor
+	fd = open(path, O_RDONLY | O_NONBLOCK);
+
+	  // Create epoll instance
+	efd = epoll_create(1);
+
+	  // Fill the event structure and register
+	ev.data.fd = fd;
+	ev.events = EPOLLIN | EPOLLET | EPOLLPRI;
+
+	epoll_ctl(efd, EPOLL_CTL_ADD, fd, &ev);
+
+	  // Ignore the first read (initial value)
+	for (int i = 0; i < 2; i++) {
+		if ((epoll_wait(efd, &events, 1, -1)) == -1) {
+			return -1;
+		}
+	}
+
+	lseek(events.data.fd, 0, SEEK_SET);
+	if (read(events.data.fd, &buf, sizeof(buf)) != 1) {
+		return -1;
+	}
+
+	close(efd);
+	close(fd);
+
+	return 0;
 }

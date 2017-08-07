@@ -218,8 +218,8 @@ namespace bigowl_i2cport {
 		DEBUG_PRINTB(unsigned(data));
 		DEBUG_PRINT("\t HEX: ");
 #ifdef DEBUG
-		for (int j = 0; j < length; j++) {
-			DEBUG_PRINTH(static_cast<int>(data[j]));
+		for (int h = 0; h < length; h++) {
+			DEBUG_PRINTH(static_cast<int>(data[h]));
 			DEBUG_PRINT(" ");
 		}
 #endif
